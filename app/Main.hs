@@ -72,6 +72,18 @@ planets = [
     }
   },
   Body {
+    bodyType = Moon,
+    name = "Moon",
+    mass = 0.0123 * earthMass,
+    radius = 0.2727 * earthRadius,
+    position = fromBody position (head $ filter (\p -> name p == "Earth") stellarSystem) (Vec2D (au / 384) 0),
+    velocity = fromBody velocity (head $ filter (\p -> name p == "Earth") stellarSystem) (Vec2D 0 1.022e3),
+    bodyColor = white,
+    bodyData = MoonSpecific MoonData {
+      orbits = head $ filter (\p -> name p == "Earth") stellarSystem
+    }
+  },
+  Body {
     bodyType = Planet,
     name = "Mars",
     mass = 0.107 * earthMass,

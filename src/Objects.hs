@@ -5,7 +5,8 @@ module Objects (
   BodyData(..),
   StarData(..),
   PlanetData(..),
-  MoonData(..)
+  MoonData(..),
+  fromBody
 ) where
 
 import Vector
@@ -47,3 +48,12 @@ data PlanetData = PlanetData {
 data MoonData = MoonData {
   orbits :: Body
 } deriving (Show, Eq)
+
+class BodyAction a where
+  fromBody :: (Body -> a) -> Body -> a -> a
+
+instance BodyAction Double where
+  fromBody action body f = f * action body
+
+instance BodyAction Vec2D where
+  fromBody action body v = v + action body
