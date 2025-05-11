@@ -5,14 +5,14 @@ import Engine
 import Objects
 import Vector
 import Graphics.Gloss.Data.ViewPort (ViewPort)
-import Units 
+import Units
 
 renderSystem :: System -> Picture
 renderSystem system = Pictures $ map renderBody system
 
 scaleFunction :: Double -> Double
 scaleFunction size
-  | size < midSize = max 0.1 (minDisplay + (midDisplay - minDisplay) * (log10 size - logMin) / (logMid - logMin))
+  | size < midSize = max minDisplay (minDisplay + (midDisplay - minDisplay) * (log10 size - logMin) / (logMid - logMin))
   | otherwise = midDisplay + (maxDisplay - midDisplay) * (log10 size - logMid) / (logMax - logMid)
   where
     maxDisplay = 200
@@ -38,7 +38,7 @@ renderBody body =
   in
     case bodyType body of
       Star ->
-        let StarSpecific starData = bodyData body
+        let Just (StarSpecific starData) = bodyData body
             glow = realToFrac $ min 3.0 $ sqrt (luminosity starData / 3.828e26)
             starColor = adjustColorByTemp col (temperature starData)
         in Pictures [
@@ -46,6 +46,15 @@ renderBody body =
           Translate posX posY $ Color (withAlpha 0.2 starColor) $ ThickCircle (size * 0.1) (size * 1.1 * glow),
           Translate posX posY $ Color (withAlpha 0.1 starColor) $ ThickCircle (size * 0.1) (size * 1.2 * glow),
           Translate posX posY $ Color (withAlpha 0.05 starColor) $ ThickCircle (size * 0.1) (size * 1.5 * glow)
+        ]
+      Asteroid ->
+        let
+          posCola = (- (1e-3 ^* velocity body))
+          posXCola = realToFrac $ x posCola
+          posYCola = realToFrac $ y posCola
+        in Pictures [
+          Translate posX posY $ color col $ ThickCircle (size * 0.1) size,
+          Translate posX posY $ color white $ line [(0,0), (posXCola, posYCola)]
         ]
       _ -> Translate posX posY $ Color col $ ThickCircle (size * 0.1) size
 

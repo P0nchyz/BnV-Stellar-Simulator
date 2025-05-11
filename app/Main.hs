@@ -1,6 +1,8 @@
 module Main (main) where
 
 import Graphics.Gloss
+import Data.List (find)
+import Data.Maybe (fromJust)
 
 import Objects
 import Render
@@ -22,7 +24,7 @@ mainStar = Body {
   position = Vec2D 0 0,
   velocity = Vec2D 0 0,
   bodyColor = makeColor 1.0 1.0 0.0 1.0,
-  bodyData = StarSpecific StarData {
+  bodyData = Just $ StarSpecific StarData {
     luminosity = solarLuminosity,
     temperature = 5772,
     metalicity = 0.0122,
@@ -40,10 +42,7 @@ planets = [
     position = Vec2D (0.387098 * au) 0,
     velocity = Vec2D 0 47.36e3,
     bodyColor = makeColor 0.6 0.6 0.7 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Terrestial",
-      composition = ["Silicate", "Iron", "Nickel"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -53,10 +52,7 @@ planets = [
     position = Vec2D (0.7233 * au) 0,
     velocity = Vec2D 0 35.02e3,
     bodyColor = makeColor 0.4 0.8 0.8 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Terrestial",
-      composition = ["Silicate", "Iron", "Nickel"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -66,22 +62,17 @@ planets = [
     position = Vec2D 149.6e9 0,
     velocity = Vec2D 0 29800,
     bodyColor = makeColor 0 0.4 0.8 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Terrestial",
-      composition = ["Silicate", "Iron", "Nickel"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Moon,
     name = "Moon",
     mass = 0.0123 * earthMass,
     radius = 0.2727 * earthRadius,
-    position = fromBody position (head $ filter (\p -> name p == "Earth") stellarSystem) (Vec2D (au / 384) 0),
-    velocity = fromBody velocity (head $ filter (\p -> name p == "Earth") stellarSystem) (Vec2D 0 1.022e3),
+    position = fromBody position (fromJust $ find (\p -> name p == "Earth") stellarSystem) (Vec2D (au / 384) 0),
+    velocity = fromBody velocity (fromJust $ find (\p -> name p == "Earth") stellarSystem) (Vec2D 0 1.022e3),
     bodyColor = white,
-    bodyData = MoonSpecific MoonData {
-      orbits = head $ filter (\p -> name p == "Earth") stellarSystem
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -91,10 +82,7 @@ planets = [
     position = Vec2D (1.523 * au) 0,
     velocity = Vec2D 0 24.07e3,
     bodyColor = makeColor 0.9 0.5 0.3 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Terrestial",
-      composition = ["Silicate", "Iron", "Nickel"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -104,10 +92,7 @@ planets = [
     position = Vec2D (5.2038 * au) 0,
     velocity = Vec2D 0 13.06e3,
     bodyColor = makeColor 0.8 0.6 0.2 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Gas Giant",
-      composition = ["Hydrogen", "Helium", "Methane"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -117,10 +102,7 @@ planets = [
     position = Vec2D (9.5370 * au) 0,
     velocity = Vec2D 0 9.6724e3,
     bodyColor = makeColor 0.6 0.4 0.2 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Gas Giant",
-      composition = ["Hydrogen", "Helium", "Methane"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -130,10 +112,7 @@ planets = [
     position = Vec2D (19.1912 * au) 0,
     velocity = Vec2D 0 6.8352e3,
     bodyColor = makeColor 0.7 0.7 1.0 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Gas Giant",
-      composition = ["Hydrogen", "Helium", "Methane"]
-    }
+    bodyData = Nothing
   },
   Body {
     bodyType = Planet,
@@ -143,10 +122,17 @@ planets = [
     position = Vec2D (30.0689 * au) 0,
     velocity = Vec2D 0 5.4778e3,
     bodyColor = makeColor 0.5 0.5 1.0 1.0,
-    bodyData = PlanetSpecific PlanetData {
-      planetType = "Gas Giant",
-      composition = ["Hydrogen", "Helium", "Methane"]
-    }
+    bodyData = Nothing
+  },
+  Body {
+    bodyType = Asteroid,
+    name = "3200",
+    mass = 50000,
+    radius = 2.5e3,
+    position = Vec2D (0.14 * au) 0,
+    velocity = Vec2D 0 100.5e3,
+    bodyColor = white,
+    bodyData = Nothing
   }
   ]
 

@@ -22,7 +22,7 @@ data Body = Body {
   position :: Vec2D,
   velocity :: Vec2D,
   bodyColor :: Color,
-  bodyData :: BodyData
+  bodyData :: Maybe BodyData
 } deriving (Show, Eq)
 
 type System = [Body]
