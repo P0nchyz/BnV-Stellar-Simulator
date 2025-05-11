@@ -5,21 +5,35 @@ import Engine
 import Objects
 import Vector
 import Graphics.Gloss.Data.ViewPort (ViewPort)
+import Units 
 
 renderSystem :: System -> Picture
 renderSystem system = Pictures $ map renderBody system
 
-scaleFunction :: Double -> Float
-scaleFunction size = max 1 $ realToFrac $ 7.8 * log (1e-6 * size)
+scaleFunction :: Double -> Double
+scaleFunction size
+  | size < midSize = max 0.1 (minDisplay + (midDisplay - minDisplay) * (log10 size - logMin) / (logMid - logMin))
+  | otherwise = midDisplay + (maxDisplay - midDisplay) * (log10 size - logMid) / (logMax - logMid)
+  where
+    maxDisplay = 200
+    midDisplay = 100
+    minDisplay = 1
+    maxSize = 1 * sunRadius
+    midSize = 4.97 * earthRadius
+    minSize = 1000e3
+    log10 = logBase 10
+    logMax = log10 maxSize
+    logMid = log10 midSize
+    logMin = log10 minSize
 
 renderBody :: Body -> Picture
 renderBody body =
   let
-    scaleFactor = 1e-9
+    scaleFactor = 30e-9
     pos = scaleFactor ^* position body
     posX = realToFrac $ x pos
     posY = realToFrac $ y pos
-    size = scaleFunction $ radius body
+    size = realToFrac $ scaleFunction $ radius body
     col = bodyColor body
   in
     case bodyType body of
@@ -33,7 +47,7 @@ renderBody body =
           Translate posX posY $ Color (withAlpha 0.1 starColor) $ ThickCircle (size * 0.1) (size * 1.2 * glow),
           Translate posX posY $ Color (withAlpha 0.05 starColor) $ ThickCircle (size * 0.1) (size * 1.5 * glow)
         ]
-      _ -> Translate posX posY $ Color col $ ThickCircle (size * 0.1) size 
+      _ -> Translate posX posY $ Color col $ ThickCircle (size * 0.1) size
 
 adjustColorByTemp :: Color -> Double -> Color
 adjustColorByTemp baseColor temp
