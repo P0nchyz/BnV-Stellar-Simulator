@@ -15,9 +15,14 @@ gravitationalForce body1 body2 =
     direction = normalize r21
 
 netForce :: System -> Body -> Vec2D
-netForce system body =
-  let otherBodies = filter (/= body) system
-  in foldr (\otherBody acc -> acc + gravitationalForce otherBody body) (Vec2D 0 0) otherBodies
+netForce [] _ = Vec2D 0 0
+netForce (currentBody:remainingSystem) body =
+  let forceFromRemaining = netForce remainingSystem body
+  in
+    if currentBody == body then forceFromRemaining
+    else
+      let forceByCurrent = gravitationalForce currentBody body
+      in forceFromRemaining + forceByCurrent
 
 applyForce :: Double -> Vec2D -> Body -> Body
 applyForce timeStep force body =
