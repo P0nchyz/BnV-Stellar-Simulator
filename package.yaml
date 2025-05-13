@@ -2,9 +2,13 @@ name:                BnV-Stellar-Simulator
 version:             0.1.0.0
 github:              "githubuser/BnV-Stellar-Simulator"
 license:             BSD-3-Clause
-author:              "José Vergara"
+author: 
+  - "José Vergara"
+  - "Anayeli Bautista"
 maintainer:          "josea.vergara2005@gmail.com"
-copyright:           "2025 José Vergara"
+copyright:
+  - "2025 José Vergara"
+  - "2025 Anayeli Bautista"
 
 extra-source-files:
 - README.md

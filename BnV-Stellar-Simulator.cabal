@@ -9,9 +9,11 @@ version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/BnV-Stellar-Simulator#readme>
 homepage:       https://github.com/githubuser/BnV-Stellar-Simulator#readme
 bug-reports:    https://github.com/githubuser/BnV-Stellar-Simulator/issues
-author:         José Vergara
+author:         José Vergara,
+                Anayeli Bautista
 maintainer:     josea.vergara2005@gmail.com
-copyright:      2025 José Vergara
+copyright:      2025 José Vergara,
+                2025 Anayeli Bautista
 license:        BSD-3-Clause
 license-file:   LICENSE
 build-type:     Simple
